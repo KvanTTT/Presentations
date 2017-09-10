@@ -1,4 +1,5 @@
 <!-- $theme: default -->
+<!-- page_number: true -->
 
 # Теория и практика формальных языков
 
@@ -296,38 +297,6 @@ s = $"Color[R={func(b: 3):#0.##}, G={G:#0.##}, B={B:#0.##}]";
 
 ---
 
-# Лексерный хак: плохое решение
-
-* Вход:
-  * `static MyType staticGlobaVar;`
-  * [`unsinged int;`](https://goo.gl/kKhdCh)
-* Грамматика
-  ```ANTLR
-  varDeclaration
-      : specifiers initDeclaratorList? ';'
-      ;
-  ```
-* Токены: `static` (specifier), `MyType` (specifier), `staticGlobaVar` (specifier)
-* Решение: поиск последнего `specifier` в визиторе и "превращение" его в `initDeclaratorList`.
-
----
-
-# Лексерный хак: изящное решение (Swiftify)
-
-* Вход:
-  * `static MyType staticGlobaVar;`
-  * [`unsinged int;`](https://goo.gl/kKhdCh)
-* Грамматика
-  ```ANTLR
-  varDeclaration
-      : (specifiers initDeclaratorList | specifiers) ';'
-      ;
-  ```
-* Токены: `static` (specifier), `MyType` (specifier), `staticGlobaVar` (initDeclaratorList)!
-* Решение: уже имеем `initDeclaratorList`, т.к. такая альтернатива приоритетней.
-
----
-
 # Регистронезависимость
 
 Языки: Delphi, T-SQL, PL/SQL и другие.
@@ -385,10 +354,8 @@ JavaScript внутри PHP или C# внутри Aspx.
 ```
 
 * Использовать режимы переключения лексем `mode`.
-* Парсер **PHP** распознает код внутри тегов `<script>` как строку:
-  `document.body.innerHTML="<svg/onload=alert(1)>"`
-* Парсер **JavaScript** используется во время обхода дерева.
-  Для него это обычный код + смещение.
+* Сначала парсинг **PHP**. Текст внутри тегов `<script>` - обычная строка.
+* Затем парсинг **JavaScript** во время обхода дерева.
 
 ---
 
@@ -414,11 +381,10 @@ JavaScript внутри PHP или C# внутри Aspx.
 # Использование отдельного режима лексем для JavaScript
 
 ```ANTLR
-ScriptText:   ~[<]+;
-ScriptClose:  '</script'? '>' -> popMode;
-PHPStart:     '<?=' -> type(Echo), pushMode(PHP);
-PHPStart:     '<?' 'php'? -> channel(SkipChannel), pushMode(PHP);
-ScriptText2:  '<' ~[<?/]* -> type(ScriptText);
+//SCRIPT_BODY: .*? '</script>'; // "Жадная" версия
+SCRIPT_BODY:   ~[<]+;
+SCRIPT_CLOSE:  '</script>' -> popMode;
+SCRIPT_DUMMY:  '<' -> type(SCRIPT_BODY);
 ```
 
 * `pushMode` - зайти в другой режим распознавания лексем (JavaScript -> PHP)
@@ -470,8 +436,8 @@ ScriptText2:  '<' ~[<?/]* -> type(ScriptText);
 * **Node** - не конечный узел дерева, содержащий детей
 * **Token** - конечный узел (keyword, id, литерал, пунктуация)
 * **Trivia** - скрытый токен без родителя, связывается с `Token`.
-    * Лидирующие (**Leading**)
-    * Замыкающие (**Trailing**)
+  * Лидирующие (**Leading**)
+  * Замыкающие (**Trailing**)
 
 ```CSharp
 // leading 1 (var)
@@ -496,6 +462,13 @@ bool trueFlag =
 ;
 ```
 
+### Лидирующие для `true`
+
+```CSharp
+#if NETCORE
+····
+```
+
 ### Лидирующие для `;`
 
 ```CSharp
@@ -504,19 +477,12 @@ bool trueFlag =
 #endif
 ```
 
-### Лидирующие для `true`
-
-```CSharp
-#if NETCORE
-····
-```
-
 ---
 
 # Препроцессорные директивы: одноэтапная обработка (Swiftify)
 
-* Одновременный парсинг директив и токенов основного языка.
-* Использование каналов для изоляции токенов препроцессорных директив.
+* Одновременный парсинг директив и основного языка.
+* Каналы для изоляции токенов препроцессорных директив.
 
 Интерпретация и обработка макросов вместе с функциями:
 
@@ -529,9 +495,11 @@ bool trueFlag =
 ### Swift
 
 ```Swift
-func DEGREES_TO_RADIANS(degrees: Double) 
-    -> Double { return (.pi * degrees)/180; }
+func DEGREES_TO_RADIANS(degrees: Double)
+   -> Double { return (.pi * degrees)/180; }
 ```
+
+Пример на [Swiftify](http://objc.to/wppvxj).
 
 ---
 
@@ -580,7 +548,7 @@ bool·trueFlag·=
 #### Лексическая ошибка
 
 ```CSharp
-class # { int i; }
+class # T { }
 ```
 
 Отдельный канал: `ERROR: . -> channel(ErrorChannel)`
@@ -588,21 +556,17 @@ class # { int i; }
 #### Отсутствующий и лишний токены
 
 ```CSharp
-class T { int f(x) { a = 3; } // Отсутствующий токен
-class T ; { int i; } // Лишний токен
+class T { // Отсутствующий токен
+class T ; { } // Лишний токен
 ```
 
 #### Несколько лишних токенов (режим «паники»)
 
 ```CSharp
-class T { int f(x) { a = 3 4 5; } }
+class T { a b c }
 ```
 
 #### Отсутствующее альтернативное подправило
-
-```CSharp
-class T { int ; }
-```
 
 ---
 
@@ -613,19 +577,12 @@ namespace App
 {
     class Program
     {
-        ;                    // Skipped Trivia
-        static void Main(string[] args)
+        static void void Main(string[] args)  // Invalid token
         {
-            a                // Missing ';'
-            ulong ul = 1lu;  // Incorrect Numeric
-            string s = """;  // Incorrect String
-            char c = '';     // Incorrect Char
+            a                // ';' expected
+            string s = """;  // Newline in constant
+            char c = '';     // Empty character literal
         }
-    }
-
-    class bControl flow
-    {
-        c                    // Incomplete Member
     }
 }
 ```
@@ -667,7 +624,6 @@ if ((err = SSLHashSHA1.update(&hashCtx, &signedParams)) != 0)
 * Методы обхода
 * Архитектура и реализации Visitor и Listener
 * Фичи C# 7 на практике
-* Сериализация
 * Оптимизации
 
 ---
@@ -775,60 +731,6 @@ public static List<Terminal> GetLeafs(this Rule node)
 
 ---
 
-# Сериалзиация
-
-* Бинарная
-* XML, Json и другие языки разметки
-* Собственный формат
-
-Подробности:
-* Проект на GitHub: [TreeProcessing.NET](https://github.com/KvanTTT/TreeProcessing.NET).
-* [Сериализация, отображение, сравнение и обход древовидных структур в .NET](https://github.com/KvanTTT/Articles/blob/tree-structures-serialization-comparison-and-mapping-on-net/Tree-Structures-Serialization-Comparison-and-Mapping-on-NET/Russian.md).
-
----
-
-# JSON сериализация деревьев
-
-* Сериализация по-умолчанию с параметром ` TypeNameHandling.All`
-* Длинные и платформозависимые имена типов
-
-Результирующий JSON:
-
-```JSON
-"Statements": {
-    "$type": "System.Collections.Generic.List`1[[TreesProcessing.NET.Statement, TreesProcessing.NET]], mscorlib",
-    "$values": [
-        ...
-    ]
-```
-
----
-
-# Своя логика сериализации с JsonConverter
-
-* **Имя класса** в качестве идентификации типа
-* **Свойство** в качестве идентификации типа
-  ```CSharp
-  override NodeType NodeType => NodeType.InvocationExpression;
-  ```
-* **Аттрибут** в качестве идентификации типа
-  ```CSharp
-  [NodeAttr(NodeType.BinaryOperatorExpression)]
-  public class BinaryOperatorExpression : Expression
-  ```
-
-Результирующий JSON:
-
-```JSON
-"Statements": {
-    "NodeType": "BlockStatement",
-    "Statements": [
-        ...
-    ]
-```
-
----
-
 # Оптимизации
 
 ## Мемоизация
@@ -846,7 +748,7 @@ public static List<Terminal> GetLeafs(this Rule node)
 
 # Ресурсы
 
-* Исходники и текст презентации:
+* Исходники [презентации](https://github.com/KvanTTT/Presentations) и [примеров](https://github.com/KvanTTT/Samples).
 * Статьи:
   * [Теория и практика парсинга исходников с помощью ANTLR и Roslyn](https://habrahabr.ru/company/pt/blog/210772)
   * [Обработка препроцессорных директив в Objective-C](https://habrahabr.ru/post/318954/)
@@ -855,8 +757,30 @@ public static List<Terminal> GetLeafs(this Rule node)
 
 ---
 
+# Выводы
+
+* Парсинг - это не так просто как кажется
+* Существуют языки с различной выразительностью и синтаксисом
+* На C\# можно пользоваться разными методами и библиотеками парсинга
+* ANTLR предоставляет широкие возможности по разработке парсеров
+* Roslyn очень продуман в построении дерева, но только C# и VB
+* Деревья можно обрабатывать разными способами
+
+---
+
 # Вопросы?
 
-## [Positive Technologies на GitHub](https://github.com/PositiveTechnologies)
+[<img align="left" src="PT.png" alt="" />](https://ptsecurity.ru/)
 
-## [Swiftify](http://swiftify.io/)
+<br>
+
+**[Positive Technologies на GitHub](https://github.com/PositiveTechnologies)**
+
+<br>
+<br>
+
+[<img align="left" src="Swiftify.png" alt="" />](http://swiftify.io/)
+
+<br>
+
+**[Swiftify](https://objectivec2swift.com/)**
