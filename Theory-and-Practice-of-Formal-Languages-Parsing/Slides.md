@@ -35,6 +35,9 @@ Digit:     [0-9]+;
 Comment:   '<!--' .*? '-->';
 ```
 
+* Пример:
+`TagOpen(<) Identifier(html) TagClose(>) Whitespace()`
+
 ---
 
 # Дерево разбора и AST
@@ -55,9 +58,10 @@ Comment:   '<!--' .*? '-->';
   * Только самые распространенные языки
 * Парсеры, написанные вручную (Roslyn)
   * Большие возможности и гибкость
+  * Большой порог вхождения
   * Медленная скорость разработки
 * Автоматически сгенерированные парсеры (ANTLR)
-  * Большой порог вхождения
+  * Порог вхождения
   * Быстрая скорость разработки после освоения
   * Меньшая гибкость по сравнению с ручными парсерами
 
@@ -89,6 +93,8 @@ a + b * c
 ---
 
 # Типы языков
+
+## Иерархия Хомского
 
 * Регулярные
 * Контекстно-свободные
@@ -148,6 +154,8 @@ Assert.AreEqual("abc123", id);
 ---
 
 # Проблемы и задачи парсинга
+
+На основе ANTLR и Roslyn.
 
 * Неоднозначность
 * Контекстно-зависимые конструкции
@@ -283,14 +291,15 @@ HeredocIdentifier
 
 ---
 
-# Интерполируемые строки в C# 6
+# `$"Интерполируемые строки в C# {2+2*2}"`
 
 ```CSharp
-s = $"{p.Name} is \"{p.Age} year{(p.Age==1 ? "" : "s")} old";
-s = $"{(p.Age == 2 ? $"{new Person { } }" : "")}";
-s = $@"\{p.Name}
-                       ""\";
-s = $"Color[R={func(b: 3):#0.##}, G={G:#0.##}, B={B:#0.##}]";
+WriteLine($"{p.Name} is \"{p.Age} year{(p.Age == 1 ? "" : "s")} old");
+WriteLine($"{(p.Age == 2 ? $"{new Person { } }" : "")}");
+WriteLine($@"\{p.Name}
+           ""\");
+WriteLine($"Color[R={func(b: 3):#0.##}, G={g:#0.##}, B={b:#0.##}]");
+
 ```
 
 Реализация в лексере [C#](https://github.com/antlr/grammars-v4/blob/master/csharp/CSharpLexer.g4).
@@ -342,6 +351,11 @@ BooleanConstant:    'TRUE' | 'FALSE';
 
 # Островные языки и конструкции
 
+<center>
+<img src="Islands.jpg " style="width: 500px;"/>
+</center>
+<br>
+
 JavaScript внутри PHP или C# внутри Aspx.
 
 ```PHP
@@ -352,6 +366,10 @@ JavaScript внутри PHP или C# внутри Aspx.
   </script>
 </head>
 ```
+
+---
+
+# Островные языки и конструкции
 
 * Использовать режимы переключения лексем `mode`.
 * Сначала парсинг **PHP**. Текст внутри тегов `<script>` - обычная строка.
@@ -394,7 +412,7 @@ SCRIPT_DUMMY:  '<' -> type(SCRIPT_BODY);
 
 ---
 
-# Обработка комментариев и пробелов
+## Обработка `/*комментариев*/` и пр·б·лов
 
 * Включение скрытых токенов в грамматику
   ```ANTLR
@@ -403,6 +421,8 @@ SCRIPT_DUMMY:  '<' -> type(SCRIPT_BODY);
   ```
 * Связывание скрытые токенов с правилами грамматики (ANTLR, Swiftify)
 * Связывание скрытых токенов с основными (Roslyn)
+
+
 
 ---
 
@@ -505,8 +525,6 @@ func DEGREES_TO_RADIANS(degrees: Double)
 
 # Препроцессорные директивы: двухэтапная обработка (Codebeat)
 
-Исключение блоков кода, с которыми парсинг будет ошибочным:
-
 ```CSharp
 bool·trueFlag·=
 ·········
@@ -518,9 +536,9 @@ bool·trueFlag·=
 ```
 
 1. Токенизация и разбор кода препроцессорных диреткив.
-2. Вычисление условных директив `#if` и определение компилируемых блоков кода.
+2. Вычисление условных директив `#if` и компилируемых блоков кода.
 3. Замена директив из исходника на пробелы.
-4. Токенизация и парсинг результирующего текста с удаленными директивами.
+4. Токенизация и парсинг результирующего текста.
 
 ---
 
@@ -543,7 +561,9 @@ bool·trueFlag·=
 
 ---
 
-# Ошибки парсинга
+# ~~А~~Ошибки парсинга
+
+![Errors](Errors.png)
 
 #### Лексическая ошибка
 
@@ -553,6 +573,10 @@ class # T { }
 
 Отдельный канал: `ERROR: . -> channel(ErrorChannel)`
 
+---
+
+# Ошибки парсинга
+
 #### Отсутствующий и лишний токены
 
 ```CSharp
@@ -560,11 +584,14 @@ class T { // Отсутствующий токен
 class T ; { } // Лишний токен
 ```
 
+
 #### Несколько лишних токенов (режим «паники»)
 
 ```CSharp
 class T { a b c }
 ```
+
+<img src="Panic.png " style="width: 200px;"/>
 
 #### Отсутствующее альтернативное подправило
 
@@ -626,16 +653,24 @@ if ((err = SSLHashSHA1.update(&hashCtx, &signedParams)) != 0)
 * Фичи C# 7 на практике
 * Оптимизации
 
+<center>
+<img src="Tree.png " />
+</center>
+
 ---
 
 # Методы обхода деревьев
 
 ## Посетитель (**Visitor**)
 
+<img align="left" src="Visitor.png" alt="" width="220px" />
+
 * Тип возвращаемого значения для каждого правила. Например, `string` для конвертера исходных кодов (Swiftify).
 * Выборочный обход дочерних узлов.
 
 ## Слушатель (**Listener**)
+
+<img align="left" src="Listener.jpg" alt="" width="220px" />
 
 * Посещает все узлы.
 * Ограниченный функционал: можно использовать для подсчета простых метрик кода.
@@ -748,12 +783,15 @@ public static List<Terminal> GetLeafs(this Rule node)
 
 # Ресурсы
 
+<center>
+<img src="Resources.png" width="450px" />
+</center>
+
 * Исходники [презентации](https://github.com/KvanTTT/Presentations) и [примеров](https://github.com/KvanTTT/Samples).
 * Статьи:
   * [Теория и практика парсинга исходников с помощью ANTLR и Roslyn](https://habrahabr.ru/company/pt/blog/210772)
   * [Обработка препроцессорных директив в Objective-C](https://habrahabr.ru/post/318954/)
-* Открытый сигнатурный движок поиска по шаблонам [PT.PM](https://github.com/PositiveTechnologies/PT.PM)
-* Грамматики: [grammars-v4](https://github.com/antlr/grammars-v4) ([PL/SQL](https://github.com/antlr/grammars-v4/tree/master/plsql), [T-SQL](https://github.com/antlr/grammars-v4/tree/master/tsql), [PHP](https://github.com/antlr/grammars-v4/tree/master/php), [C#](https://github.com/antlr/grammars-v4/tree/master/csharp), [Java8](https://github.com/antlr/grammars-v4/tree/master/java8-pt), [Objective-C](https://github.com/antlr/grammars-v4/tree/master/objc)).
+* Движок поиска по шаблонам [PT.PM](https://github.com/PositiveTechnologies/PT.PM) и грамматики [grammars-v4](https://github.com/antlr/grammars-v4) ([PL/SQL](https://github.com/antlr/grammars-v4/tree/master/plsql), [T-SQL](https://github.com/antlr/grammars-v4/tree/master/tsql), [PHP](https://github.com/antlr/grammars-v4/tree/master/php), [C#](https://github.com/antlr/grammars-v4/tree/master/csharp), [Java8](https://github.com/antlr/grammars-v4/tree/master/java8-pt), [Objective-C](https://github.com/antlr/grammars-v4/tree/master/objc)).
 
 ---
 
@@ -770,6 +808,8 @@ public static List<Terminal> GetLeafs(this Rule node)
 
 # Вопросы?
 
+<br>
+
 [<img align="left" src="PT.png" alt="" />](https://ptsecurity.ru/)
 
 <br>
@@ -779,7 +819,7 @@ public static List<Terminal> GetLeafs(this Rule node)
 <br>
 <br>
 
-[<img align="left" src="Swiftify.png" alt="" />](http://swiftify.io/)
+[<img align="left" src="Swiftify.png" alt="" />](http://swiftify.com/)
 
 <br>
 
