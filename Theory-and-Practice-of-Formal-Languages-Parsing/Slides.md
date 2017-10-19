@@ -1,7 +1,7 @@
 <!-- $theme: default -->
 <!-- page_number: true -->
 
-# Теория и практика формальных языков
+# Теория и практика парсинга формальных языков
 
 * Иван Кочуркин
 * Работаю в [Positive Technologies](https://www.ptsecurity.com/ru-ru/) над открытым универсальным сигнатурным анализатором кода [PT.PM](https://github.com/PositiveTechnologies/PT.PM)
