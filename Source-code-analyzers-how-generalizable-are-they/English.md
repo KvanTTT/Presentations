@@ -8,6 +8,10 @@ highlightTheme: "default"
 mouseWheel: true
 ---
 
+<link href="pdug-begin.png">
+<link href="css/theme/black.css">
+<link href="css/theme/white.css">
+
 <style>
 .reveal h1 {
     font-size: 1.3em;
@@ -1491,6 +1495,8 @@ public override MatchContext Match(Token t, MatchContext c)
 ---
 
 <!-- .slide: data-background="pdug-end.jpg"; -->
+
+<link href="pdug-end.jpg">
 
 <span style="position:absolute; left:50%; top: 40%; color: #ECE9D7; font-size: 1.6em">THANKS!</span>
 
