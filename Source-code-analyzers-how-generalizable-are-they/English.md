@@ -11,6 +11,7 @@ mouseWheel: true
 <link href="pdug-begin.png">
 <link href="css/theme/black.css">
 <link href="css/theme/white.css">
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
 
 <style>
 .reveal h1 {
