@@ -902,20 +902,6 @@ print($x1);
 
 # DFG Patterns (SQL Injection)
 
-**Project: [DVWA](https://github.com/ethicalhack3r/DVWA)**
-
-<img src=sqli.php.png />
-
-<aside class="notes">
-Здесь же представлен пример инъекции SQL на тестовом проекте DVWA
-(Damn Vulnerable Web Application). Это скрин, кстати, из нашего продукта
-PT Application Inspector.
-</aside>
-
----
-
-# DFG Patterns (SQL Injection)
-
 ### Vulnerability
 
 ```php
@@ -938,6 +924,8 @@ $result = mysqli_query($query);
 <aside class="notes">
 На этом слайде приведен упрощенные примеры. Обратите внимание, что во втором
 случае уязвимость отсутствует из-за наличия трансформирующей функции `mysqli_real_escape_string`.
+
+Много "эталонов" уязвимостей можно найти в проекте DVWA (Damn Vulnerable Web Application).
 </aside>
 
 ---
