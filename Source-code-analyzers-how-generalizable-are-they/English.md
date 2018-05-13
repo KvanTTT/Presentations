@@ -382,7 +382,7 @@ Regex + Additional Syntax
 
 # Token Patterns
 
-Simple, but still not recursive (in common)
+Simple, but still not recursive
 
 * `<[password]> = <"">`
 * `</* password\s*=\s*"god" */>`
@@ -439,6 +439,8 @@ add constraint С_PK primary key (ID);
 ```sql
 add constraint C_PK primary key (ID);
 ```
+
+#### WTF?
 
 <aside class="notes">
 Расскажу об одном забавном случае, как мы однажды нашли недоразумение в коде
@@ -542,7 +544,7 @@ Response.Write(SafeString<Html>.Format($" ... "));
 * **Parse Tree** - tree structure obtained from tokens sequence.
 * **AST** - Abstract Syntax Tree, i.e. parse tree without spaces, semicolons and other not significant tokens.
 
-![AST](AST.png)
+<img src=AST.svg alt="AST" width=50% />
 
 <aside class="notes">
 Давайте перейдем к следующему типу анализаторов, которые оперируют древовидными
