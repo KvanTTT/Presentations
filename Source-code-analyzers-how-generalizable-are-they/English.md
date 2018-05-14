@@ -94,7 +94,7 @@ Theme: <a href="#" onclick="document.getElementById('theme').setAttribute('href'
 * Ivan Kochurkin
 * Team Lead at [Positive Technologies](https://www.ptsecurity.com/), Data Flow Source Code Analyzer
 * Developer at [Swiftify](http://swiftify.io/), Objective-C → Swift Source Code Converter
-* Active Contributor at GitHub: [KvanTTT](https://github.com/KvanTTT)
+* Active Contributor on GitHub: [KvanTTT](https://github.com/KvanTTT)
 * Tech Article Writer at [habr.com](https://habr.com/users/kvanttt/) and other blogs
 
 <aside class="notes">
@@ -188,7 +188,7 @@ Theme: <a href="#" onclick="document.getElementById('theme').setAttribute('href'
 
 # ㊙️ Regex DSL
 
-* `[ ]` - Matches a single character that is contained within the bracket.
+* `[ ]` - Matches a single character that is contained within the brackets.
 * `[^ ]` - Matches a single character that is not contained within the brackets.
 * `?` - Optional symbol
 * `*` - Zero or more occurrences. `ab*c` matches `ac`, `abc`, `abbc`
@@ -224,9 +224,9 @@ Theme: <a href="#" onclick="document.getElementById('theme').setAttribute('href'
 | Advantages                   | Disadvantages                                            |
 |------------------------------|----------------------------------------------------------|
 | Very simple                  | Hard to support                                          |
-| Formal model is not required | In general not recursive                                 |
+| Formal model is not required | Generally not recursive                                  |
 | Universal                    | Slow                                                     |
-|                              | Hidden tokens (whitespaces, comments) can not be skipped |
+|                              | Hidden tokens (whitespaces, comments) cannot be skipped |
 
 <aside class="notes">
 Подводя итоги, можно сказать следующее:
@@ -254,7 +254,7 @@ Theme: <a href="#" onclick="document.getElementById('theme').setAttribute('href'
 # 🔲 Regex Patterns
 
 * Floating Point Numbers: `[-+]?[0-9]*\.?[0-9]`
-* 📧 EMails
+* 📧 Emails Addresses
 
   ```
   `\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b`
@@ -281,6 +281,7 @@ Theme: <a href="#" onclick="document.getElementById('theme').setAttribute('href'
 
 ---
 
+<link href="level-up.jpg">
 <!-- .slide: data-background="level-up.jpg"; -->
 
 ---
@@ -421,7 +422,7 @@ DSL все же достаточно ограничен и костылен.
 
 <!-- .slide: style="text-align: left;" -->
 
-# 😲 A error in code due to the error in parser?
+# 😲 A error in code due to error in parser?
 
 #### Grammar
 
@@ -545,8 +546,9 @@ Response.Write(SafeString<Html>.Format($" ... "));
 
 # 🌿 Parse Tree & AST
 
-* **Parse Tree** - tree structure obtained from tokens sequence.
-* **AST** - Abstract Syntax Tree, i.e. parse tree without spaces, semicolons and other not significant tokens.
+* **Parse Tree** - obtained from sequence of tokens.
+* **AST** - Abstract Syntax Tree, i.e., a parse tree without spaces, semicolons,
+and other non-significant tokens.
 
 <img src=AST.svg alt="AST" width=50% />
 
@@ -643,7 +645,7 @@ Parse Tree DSL = Tokens DSL + Additional Syntax
 
 * Invocation: `method_name(expr (',' expr)*)`
 * Member reference expression: `target.name`
-* Try Catch Block: `try {...} catch { }`
+* Try/Catch Block: `try {...} catch { }`
 
 <aside class="notes">
 
@@ -655,7 +657,7 @@ Parse Tree DSL = Tokens DSL + Additional Syntax
 
 # 🔲 Parse Tree Patterns
 
-### Empty try catch block (All)
+### Empty try/catch block (All)
 
 ```csharp
 try
@@ -672,7 +674,7 @@ new AllowAllHostnameVerifier(...) <|>
 SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER
 ```
 
-### Cookie Without Secure Attribute (PHP)
+### Cookie without secure attribute (PHP)
 
 ```php
 session_set_cookie_params(#, #, #)
@@ -976,7 +978,7 @@ if ((err = SSLHashSHA1.update(&hashCtx, &signedParams)) != 0)
 err = sslRawVerify(...); // Verification!
 ```
 
-<span class="fragment">Detection methods</span>
+<span class="fragment">Detection methods:</span>
 
 <span class="fragment">• 🌿 Parse Tree<br></span>
 <span class="fragment">• Control Flow Graph</span>
@@ -1009,6 +1011,7 @@ err = sslRawVerify(...); // Verification!
 
 ---
 
+<link href="cpg.jpg">
 <!-- .slide: data-background="cpg.svg"; -->
 
 # ⏭️ Code property graph (CPG)
@@ -1174,7 +1177,7 @@ xor eax, eax ; eax is UNTAINTED
 
 <!-- .slide: style="text-align: left;" -->
 
-# ㊙️ Turing Complete DSL
+# ㊙️ Turing-Complete DSL
 
 * Implementation language (C#, Java, PHP, etc.)
 * Universal actions
@@ -1241,10 +1244,10 @@ public override MatchContext Match(Token t, MatchContext c)
 
 ---
 
-# 📋 Conslusion
+# 📋 Conclusion
 
-* Several source code analyzer types has been described.
-* Different models show different properties of program.
+* Several source code analyzer types have been described.
+* Different models show different properties of programs.
 * More complex model -> less generalized analyzer.
 
 <aside class="notes">
@@ -1285,7 +1288,7 @@ public override MatchContext Match(Token t, MatchContext c)
 ## Responsibilities
 
 * Data Flow Analyzer Development
-* Alogorithms Implementation
+* Algorithm Implementation
 * Languages and Vulnerabilities Research
 
 <aside class="notes">
