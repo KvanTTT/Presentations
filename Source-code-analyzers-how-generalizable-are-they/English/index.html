@@ -114,12 +114,12 @@ Theme: <a href="#" onclick="document.getElementById('theme').setAttribute('href'
 
 </div>
 </script></section><section  data-markdown><script type="text/template">
-# About me
+# 📝 About me
 
 * Ivan Kochurkin
 * Team Lead at [Positive Technologies](https://www.ptsecurity.com/), Data Flow Source Code Analyzer
 * Developer at [Swiftify](http://swiftify.io/), Objective-C → Swift Source Code Converter
-* Active Contributor at GitHub: [KvanTTT](https://github.com/KvanTTT)
+* Active Contributor on GitHub: [KvanTTT](https://github.com/KvanTTT)
 * Tech Article Writer at [habr.com](https://habr.com/users/kvanttt/) and other blogs
 
 <aside class="notes">
@@ -134,7 +134,7 @@ Theme: <a href="#" onclick="document.getElementById('theme').setAttribute('href'
 на хабре на техническую тематику.
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# Analyzer Types
+# 📋 Analyzer Types
 
 1. Regular Expressions
 2. Tokens
@@ -153,18 +153,18 @@ Theme: <a href="#" onclick="document.getElementById('theme').setAttribute('href'
 * Поднимите руку, кто считает что нет?
 
 Вижу есть и те, кто воздержался. Запомните ваши ответы, а в конце доклада мы
-прогосуем вновь и посмотрим, поменялось ли ваше мнение. Надеюсь кто-то из вас
+проголосуем вновь и посмотрим, поменялось ли ваше мнение. Надеюсь кто-то из вас
 почувствует себя немного профессионалом и воздержавшихся станет меньше.
 
-Для того, чтобы разобраться в этом вопросе, давайте разобьем модели исходного кода на следующие типы
-и опишем их все более подробно: регулярные выражения, токены, деревья разбора
+Для того, чтобы разобраться в этом вопросе, давайте разобьем модели исходного кода
+на следующие типы: регулярные выражения, токены, деревья разбора
 или абстрактные синтаксические деревья, графы потоков данных и управления, и,
 наконец, бинарный язык или промежуточное представление. Каждая модель описывает определенные
 свойства кода, которые не могут описывать другие модели.
 
 Регулярные выражения вообще не требуют промежуточной модели, они
 работают на тексте. Следующая модель оперирует уже линейной структурой, списком
-токнов. Их уже необходимо унифицировать. Но это не так сложно сделать, как
+токенов. Их уже необходимо унифицировать. Но это не так сложно сделать, как
 унифицировать дерево разбора или абстрактное синтаксическое дерево, потому что
 они являются иерархическими. А следующие структуры вообще графовые,
 причем они содержат циклы, которые усложняют и увеличивают время анализатора.
@@ -172,12 +172,12 @@ Theme: <a href="#" onclick="document.getElementById('theme').setAttribute('href'
 причем в контексте самой операционной системы.
 
 В докладе я детально опишу эти представления, какие дефекты исходного кода с
-помощью них можно находить в контексте ИБ, а также пофантазирую о том, как могли бы выглядеть
-предметно-ориентированные языки под них, т.е. DSL. На DSL я акцентирую внимание
-DSL, потому что они хорошо отображают сущности рассматриваемых моделей.
+помощью них можно находить в контексте ИБ, а также пофантазирую о том, как могли
+бы выглядеть предметно-ориентированные языки под них, т.е. DSL. На DSL я
+акцентирую внимание DSL, потому что они хорошо отображают сущности рассматриваемых моделей.
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# Regular Expressions
+# ⏭️ Regular Expressions
 
 1. `<table>(.*?)</table>`
 2. Attributes? `<table.*?>(.*?)</table>`
@@ -191,7 +191,7 @@ DSL, потому что они хорошо отображают сущност
 такое и если их использовать для обработки реальных исходников, то можно вызывать
 Ктулху и попасть в ад.
 
-Рассмотрим такую регулярку с открывающим и закрывающим тегом table: `<table>(.*?)</table>`.
+Рассмотрим регулярку с открывающим и закрывающим тегом table: `<table>(.*?)</table>`.
 Данное выражение парсит не жадно текст до закрывающегося тега `</table>`.
 Ок, все хорошо, все довольны. А что, если нужно добавить еще и обработку аттрибутов?
 Ок, нет проблем используем из пункта 2: `<table.*?>(.*?)</table>`. А что если
@@ -199,15 +199,15 @@ DSL, потому что они хорошо отображают сущност
 также могут содержать кучу тегов? Или, допустим, добавить поддержку комментариев
 `<!-- html comment -->`. После определенного этапа вам не захочется вносить
 изменения в это сложное регулярное выражение, и вы поймете, что здесь что-то не
-так :) <!-- TODO: можно вставить про Ктулху>
+так :)
 
 Кстати, то же самое касается и парсинга любых языков, в котором есть вложенные
 элементы, например простейшие блоки из фигурных скобок в C#.
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# Regex DSL
+# ㊙️ Regex DSL
 
-* `[ ]` - Matches a single character that is contained within the bracket.
+* `[ ]` - Matches a single character that is contained within the brackets.
 * `[^ ]` - Matches a single character that is not contained within the brackets.
 * `?` - Optional symbol
 * `*` - Zero or more occurrences. `ab*c` matches `ac`, `abc`, `abbc`
@@ -225,31 +225,31 @@ DSL, потому что они хорошо отображают сущност
 например, можно использовать вертикальную палочку, которая обозначает выбор из
 двух и более вариантов.
 
-Вообще говоря регулярки в современных языках программирования обладают мощностью
-полноценных языков благодаря обратным ссылкам и другим фичам. Однако описывать
+Регулярки в современных языках программирования обладают мощностью полноценных
+языков благодаря обратным ссылкам и другим фичам. Однако описывать
 ими конструкции с определенного этапа становится очень сложно.
 
 Почему описание регулярных выражений и этот слайд здесь вообще существуют? Дело
 в том, что последующие DSL являются надмножеством предыдущих и содержат
 дополнительные синтаксические конструкции. Т.е. язык для универсальных токенов,
-например, будет также в каком-то виде содержать повторы, другие операторы из регулярных выражений.
+например, будет также в каком-то виде содержать повторы, другие операторы из
+регулярных выражений.
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# Regex Patterns
+# 🔲 Regex Patterns
 
 | Advantages                   | Disadvantages                                            |
 |------------------------------|----------------------------------------------------------|
 | Very simple                  | Hard to support                                          |
-| Formal model is not required | In general not recursive                                 |
+| Formal model is not required | Generally not recursive                                  |
 | Universal                    | Slow                                                     |
-|                              | Hidden tokens (whitespaces, comments) can not be skipped |
+|                              | Hidden tokens (whitespaces, comments) cannot be skipped |
 
 <aside class="notes">
 Подводя итоги, можно сказать следующее:
 
 Использовать их очень легко, для них даже не требуется никакого дополнительного
-преобразования исходного кода. Кроме того, их можно использовать не только для
-поиска интересующих строчек, но и для замены одних цепочек на другие.
+преобразования исходного кода.
 
 Такая простота, однако, чревата большими сложностями при поиске чего-то менее
 тривиального. Во-первых, регулярные выражения даже короткие тяжело воспринимать,
@@ -261,15 +261,15 @@ DSL, потому что они хорошо отображают сущност
 
 В-третьих, сложные регулярные выражения могут довольно долго отрабатывать, т.к. нужно
 учитывать пробелы и другие незначимые символы. Кстати, это тоже является
-проблемой, т.к. в регулярках нельзя просто взять и забить на проблемы, ой пробелы. Если у вас
-между двумя строками есть пробелы, то надо их всегда указывать. Это также захламляет
-и без того сложное регулярное выражение.
+проблемой, т.к. в регулярках нельзя просто взять и забить на проблемы, ой пробелы.
+Если у вас между двумя строками есть пробелы, то надо их всегда указывать, например
+`\s*`. Это также захламляет и без того сложное регулярное выражение.
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# Regex Patterns
+# 🔲 Regex Patterns
 
 * Floating Point Numbers: `[-+]?[0-9]*\.?[0-9]`
-* EMails
+* 📧 Emails Addresses
 
   ```
   `\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b`
@@ -283,7 +283,7 @@ DSL, потому что они хорошо отображают сущност
 
 Конечно же все наверное видели подобие регулярного выражения для парсинга
 адресов электронной почты. В стандарте на самом деле оно выглядит куда более
-громоздко, хотя и эта запись уже плохо читается. Однако надеюсь также все понимают,
+громоздко, хотя и эта запись уже плохо читается. Надеюсь также все понимают,
 что с помощью только регулярного выражения нельзя отвалидировать почту, потому
 форматов очень много, у разных серверов разные ограничения. Так что самый
 надежный способ проверить email - отправить тестовое письмо и удостовериться, что
@@ -294,9 +294,12 @@ DSL, потому что они хорошо отображают сущност
 лишним.
 </aside>
 </script></section><section  data-markdown><script type="text/template">
+<link href="level-up.jpg">
+<!-- .slide: data-background="level-up.jpg"; -->
+</script></section><section  data-markdown><script type="text/template">
 <!-- .slide: style="text-align: left;" -->
 
-# Tokens
+# ⏭️ Tokens
 
 * Lexeme - Recognized char sequence
 * Token = Lexeme + Type
@@ -316,7 +319,7 @@ DSL, потому что они хорошо отображают сущност
     ```
 
 <aside class="notes">
-Однако последнюю проблему можно решить если перейти на следующий уровень, в
+Проблему с комментариями можно решить если перейти на следующий уровень, в
 котором анализатор оперирует уже не отдельными символами, а группами символов,
 которые обозначают ключевые слова, числа, строки, пробелы и т.д. В этом случае
 пробелы и комментарии можно сразу отбрасывать если они не нужны.
@@ -343,7 +346,7 @@ ANTLR, кстати, является еще и генератором парс�
 </script></section><section  data-markdown><script type="text/template">
 <!-- .slide: style="text-align: left;" -->
 
-# Token DSL Example
+# ㊙️ Token DSL Example
 
 Regex + Additional Syntax
 
@@ -386,7 +389,7 @@ Regex + Additional Syntax
 достаточной выразительной мощностью.
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# Token Patterns
+# 🔲 Token Patterns
 
 Simple, but still not recursive
 
@@ -424,7 +427,7 @@ DSL все же достаточно ограничен и костылен.
 
 <!-- .slide: style="text-align: left;" -->
 
-# A error in code due to the error in parser?
+# 😲 A error in code due to error in parser?
 
 #### Grammar
 
@@ -432,19 +435,19 @@ DSL все же достаточно ограничен и костылен.
 Identifier: [A-Za-z]+
 ```
 
-#### Wrong
+#### ❌ Wrong
 
 ```sql
 add constraint С_PK primary key (ID);
 ```
 
-#### Right
+#### ✔️ Right
 
 ```sql
 add constraint C_PK primary key (ID);
 ```
 
-#### WTF?
+#### 😲 WTF?
 
 <aside class="notes">
 Расскажу об одном забавном случае, как мы однажды нашли недоразумение в коде
@@ -461,14 +464,14 @@ add constraint C_PK primary key (ID);
 </script></section><section  data-markdown><script type="text/template">
 <!-- .slide: style="text-align: left;" -->
 
-# Text fingerprinting with zero-length characters
+# 🕵️ Text fingerprinting with zero-length characters
 
-Be c​aref​ul wh​at yo​u copy: In​visib​​ly inserting user​names into text​ with Zero-Width Characters​
+Be c​aref​ul wh​at yo​u copy
 
-<span class="fragment">http://diffchecker.com</span>
+<span class="fragment">🕵️ [https://diffchecker.com](https://www.diffchecker.com/M2PvqSXw)</span>
 
 <span class="fragment">
-Be c•aref•ul wh•at yo•u copy: In•visib••ly inserting user•names into text• with Zero-Width Characters•
+Be c•aref•ul wh•at yo•u copy•
 </span>
 
 <aside class="fragment" align="middle">Detail: [habr.com](https://habr.com/post/352950/) | [Medium](https://medium.com/@umpox/be-careful-what-you-copy-invisibly-inserting-usernames-into-text-with-zero-width-characters-18b4e6f17b66)
@@ -478,7 +481,7 @@ Be c•aref•ul wh•at yo•u copy: In•visib••ly inserting user•names 
 
 <aside class="notes">
 Есть и другая похожая забавная история с символами, но только уже нулевой длины.
-Например, в эту строку я вставил 10 таких символов. Не верите? Можете сами
+Например, в эту строку я вставил 5 таких символов. Не верите? Можете сами
 в этом убедиться с помощью сервиса <https://www.diffchecker.com>.
 Эти символы можно использовать как уникальные "отпечатки" текста для
 идентификации пользователей. С помощью этого способа, например, можно поиграть в
@@ -489,7 +492,7 @@ Be c•aref•ul wh•at yo•u copy: In•visib••ly inserting user•names 
 хабре и медиуме.
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# [Lib Protection](https://github.com/LibProtection)
+# 📂 [Lib Protection](https://github.com/LibProtection)
 
 ```csharp
 var a = Request.Params["a"];
@@ -499,8 +502,8 @@ Response.Write($"<img src='//host/1/{a}' onclick='f({b})'/>");
 
 <table style="font-size: 0.6em">
   <tr>
-    <td>Good :)</td>
-    <td>Bad :(</td>
+    <td>😊 Good</td>
+    <td>☹️ Bad</td>
   </tr>
   <tr>
     <td>
@@ -536,10 +539,13 @@ Response.Write(SafeString<Html>.Format($" ... "));
 "LibProtection: 6 месяцев спустя".
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# Parse Tree
+<!-- .slide: data-background="level-up.jpg"; -->
+</script></section><section  data-markdown><script type="text/template">
+# 🌿 Parse Tree & AST
 
-* **Parse Tree** - tree structure obtained from tokens sequence.
-* **AST** - Abstract Syntax Tree, i.e. parse tree without spaces, semicolons and other not significant tokens.
+* **Parse Tree** - obtained from sequence of tokens.
+* **AST** - Abstract Syntax Tree, i.e., a parse tree without spaces, semicolons,
+and other non-significant tokens.
 
 <img src=AST.svg alt="AST" width=50% />
 
@@ -566,7 +572,7 @@ Response.Write(SafeString<Html>.Format($" ... "));
 *лидирующих* и *замыкающих* токенов. <!-- TODO: сравнение -->
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# Leading & Trailing Tokens
+# 🎓 Leading & Trailing Tokens
 
 ```CSharp
 // leading 1 (var)
@@ -596,7 +602,7 @@ ANTLR такой функционал.
 <!-- TODO: пример ошибочных токенов -->
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# ANTLR Parser Generator
+# 📂 ANTLR Parser Generator
 
 <img src="PT-loves-GitHub.jpg" width=80% alt="PT loves GitHub" />
 
@@ -624,13 +630,13 @@ Java, C#, Python 2|3, JavaScript, C++, Go, Swift. Грамматика опис�
 </script></section><section  data-markdown><script type="text/template">
 <!-- .slide: style="text-align: left;" -->
 
-# Parse Tree DSL
+# ㊙️ Parse Tree DSL
 
 Parse Tree DSL = Tokens DSL + Additional Syntax
 
 * Invocation: `method_name(expr (',' expr)*)`
 * Member reference expression: `target.name`
-* Try Catch Block: `try {...} catch { }`
+* Try/Catch Block: `try {...} catch { }`
 
 <aside class="notes">
 
@@ -638,9 +644,9 @@ Parse Tree DSL = Tokens DSL + Additional Syntax
 </script></section><section  data-markdown><script type="text/template">
 <!-- .slide: style="text-align: left;" -->
 
-# Parse Tree Patterns
+# 🔲 Parse Tree Patterns
 
-### Empty try catch block (All)
+### Empty try/catch block (All)
 
 ```csharp
 try
@@ -657,7 +663,7 @@ new AllowAllHostnameVerifier(...) <|>
 SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER
 ```
 
-### Cookie Without Secure Attribute (PHP)
+### Cookie without secure attribute (PHP)
 
 ```php
 session_set_cookie_params(#, #, #)
@@ -670,7 +676,9 @@ session_set_cookie_params(#, #, #)
 небезопасной сигнатуре. В этом примере четвертый аргумент отвечает за флаг безопасности.
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# Data Flow Graph (DFG)
+<!-- .slide: data-background="level-up.jpg"; -->
+</script></section><section  data-markdown><script type="text/template">
+# ⏭️ Data Flow Graph (DFG)
 
 ```csharp
 if (cond)
@@ -709,9 +717,9 @@ c = b * 17; // b – def, c – use
 методов, но они разрешимы.
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# DFG & AST interaction
+# 🎓 DFG & AST interaction
 
-### Var initialization
+### Var Initialization
 
 ```csharp
 int b;
@@ -743,7 +751,7 @@ AST. Например, в некоторых случаях можно прос�
 
 <!-- TODO: сравнение про что-то двойственное -->
 </script></section><section  data-markdown><script type="text/template">
-# Conditional expressions
+# 🎓 Conditional expressions
 
 ## PHP conditional
 
@@ -770,9 +778,9 @@ Console.Write(true ? "true" : false ? "true2" : "false2");
 это разрешается уже на уровне AST.
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# DFG Patterns (SQL Injection)
+# 🔲 DFG Patterns (SQL Injection)
 
-### Vulnerability
+### ❌ Vulnerability
 
 ```php
 $id = $_SESSION[ 'id' ];
@@ -780,7 +788,7 @@ $query  = "SELECT * FROM users WHERE user_id = '$id'";
 $result = mysqli_query($query);
 ```
 
-### No vulnerability (transform function)
+### ✔️ No vulnerability (transform function)
 
 ```php
 $id = $_SESSION[ 'id' ];
@@ -802,7 +810,7 @@ Project: [DVWA](https://github.com/ethicalhack3r/DVWA)
 </script></section><section  data-markdown><script type="text/template">
 <!-- .slide: style="text-align: left;" -->
 
-# Data Flow Graph DSL
+# ㊙️ Data Flow Graph DSL
 
 Data Flow DSL = Parse Tree DSL + Additional Syntax
 
@@ -841,7 +849,7 @@ a = c
 как оператор потока данных.
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# Data Flow Patterns
+# 🔲 Data Flow Patterns
 
 ## PHP XSS
 
@@ -894,7 +902,7 @@ resp.Write("some string"); // typeof(resp) == HttpResponse
 выяснить, что в последней строчке переменная `resp` обладает типом `HttpResponse`.
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# Control Flow Graph (CFG)
+# ⏭️ Control Flow Graph (CFG)
 
 <table>
 <tr>
@@ -923,9 +931,9 @@ resp.Write("some string"); // typeof(resp) == HttpResponse
 </script></section><section  data-markdown><script type="text/template">
 <!-- .slide: style="text-align: left;" -->
 
-# CFG Patterns
+# 🔲 CFG Patterns
 
-[Goto Fail Vulnerability](https://nakedsecurity.sophos.com/2014/02/24/anatomy-of-a-goto-fail-apples-ssl-bug-explained-plus-an-unofficial-patch/)
+⚠️ [Goto Fail Vulnerability](https://nakedsecurity.sophos.com/2014/02/24/anatomy-of-a-goto-fail-apples-ssl-bug-explained-plus-an-unofficial-patch/)
 
 ```c
 hashOut.data = hashes + SSL_MD5_DIGEST_LEN;
@@ -941,9 +949,9 @@ if ((err = SSLHashSHA1.update(&hashCtx, &signedParams)) != 0)
 err = sslRawVerify(...); // Verification!
 ```
 
-<span class="fragment">Detection methods</span>
+<span class="fragment">Detection methods:</span>
 
-<span class="fragment">• Parse Tree<br></span>
+<span class="fragment">• 🌿 Parse Tree<br></span>
 <span class="fragment">• Control Flow Graph</span>
 
 <aside class="notes">
@@ -968,11 +976,14 @@ err = sslRawVerify(...); // Verification!
 
 <asied>
 </script></section><section  data-markdown><script type="text/template">
-# Code property graph (CPG)
+<!-- .slide: data-background="level-up.jpg"; -->
+</script></section><section  data-markdown><script type="text/template">
+<link href="level-up.jpg">
+<!-- .slide: data-background="cpg.svg"; -->
+
+# ⏭️ Code property graph (CPG)
 
 CPG = AST + DFG + CFG
-
-<!-- TODO: background image -->
 
 <aside class="notes">
 Представляет собой совокупность графов UST, CFG и DFG. По факту эта модель ничего
@@ -991,9 +1002,9 @@ CPG можно упростить независимо от внешних да�
 Вообще говоря редукция графов уже напоминают абстрактную интепретацию кода.
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# CPG Optimizations
+# 🎓 CPG Optimizations
 
-* Static
+* ➗ Static
   * Constant Propagation
   * Constant Folding
     * `2 + 2 * 2` → `6`
@@ -1020,7 +1031,7 @@ CPG можно упростить независимо от внешних да�
 когда когда в зависимости от них динамически создается объект определенного типа.
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# CPG Optimizations
+# 🎓 CPG Optimizations
 
 ## Overloads resolving
 
@@ -1071,9 +1082,11 @@ Console.WriteLine(x.ToString()); // x ∈ A ∪ B
 в том числе от Владимира Кочеткова. Так что подробно в нее я углубляться не буду.
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# IR Instructions
+<!-- .slide: data-background="level-up.jpg"; -->
+</script></section><section  data-markdown><script type="text/template">
+# IR | Binary Instructions
 
-## Bad :(
+## ❌
 
 ```
 mov eax, tainted_input
@@ -1081,7 +1094,7 @@ mov ecx, untainted_input
 add ecx, eax ; ecx is TAINTED
 ```
 
-## Good :)
+## ✔️
 
 ```
 mov eax, tainted_input
@@ -1121,7 +1134,7 @@ xor eax, eax ; eax is UNTAINTED
 </script></section><section  data-markdown><script type="text/template">
 <!-- .slide: style="text-align: left;" -->
 
-# Turing Complete DSL
+# ㊙️ Turing-Complete DSL
 
 * Implementation language (C#, Java, PHP, etc.)
 * Universal actions
@@ -1143,7 +1156,7 @@ xor eax, eax ; eax is UNTAINTED
 </script></section><section  data-markdown><script type="text/template">
 # Implementation language
 
-## [PT Pattern Matching (PT.PM)](https://github.com/PositiveTechnologies/PT.PM)
+## 🔳 [PT Pattern Matching (PT.PM)](https://github.com/PositiveTechnologies/PT.PM)
 
 ```csharp
 // Pattern: <[.+]>
@@ -1184,10 +1197,10 @@ public override MatchContext Match(Token t, MatchContext c)
 в отдельную сборку и динамически ее подгружать, что, например, позволит сделать C#.
 </aside>
 </script></section><section  data-markdown><script type="text/template">
-# Conslusion
+# 📋 Conclusion
 
-* Several source code analyzer types has been described.
-* Different models show different properties of program.
+* Several source code analyzer types have been described.
+* Different models show different properties of programs.
 * More complex model -> less generalized analyzer.
 
 <aside class="notes">
@@ -1215,7 +1228,7 @@ public override MatchContext Match(Token t, MatchContext c)
 </script></section><section  data-markdown><script type="text/template">
 <!-- .slide: style="text-align: left;" -->
 
-# We Are Hiring
+# 👨‍💻 We Are Hiring
 
 <img src=hh.svg width=13% align=left style="margin:15px" />
 <br>
@@ -1226,7 +1239,7 @@ public override MatchContext Match(Token t, MatchContext c)
 ## Responsibilities
 
 * Data Flow Analyzer Development
-* Alogorithms Implementation
+* Algorithm Implementation
 * Languages and Vulnerabilities Research
 
 <aside class="notes">
