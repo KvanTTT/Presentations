@@ -993,11 +993,11 @@ err = sslRawVerify(...); // Verification!
 
 ---
 
+<!-- .slide: data-background="cpg.svg"; -->
+
 # Code property graph (CPG)
 
 CPG = AST + DFG + CFG
-
-<!-- TODO: background image -->
 
 <aside class="notes">
 Представляет собой совокупность графов UST, CFG и DFG. По факту эта модель ничего
