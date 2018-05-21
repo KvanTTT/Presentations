@@ -57,6 +57,13 @@ mouseWheel: true
     background-color: #ff0000;
     color: #ffffff"
 }
+
+.header-links {
+    color: #6CA0E8;
+}
+.header-links:link {
+    color: #6CA0E8;
+}
 </style>
 
 <!-- .slide: data-background="pdug-begin.png"; width="100%" style="text-align: left;" -->
@@ -80,10 +87,13 @@ Team Lead
 <br>
 
 <span style="position:absolute; left:-15%; top:95%; font-size: 0.5em;">
-Theme: <a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/white.css'); return false;">White</a> |
-<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/black.css'); return false;">Black</a></span>
+Theme: <a href="#" class="header-links" onclick="document.getElementById('theme').setAttribute('href','css/theme/white.css'); return false;">White</a> |
+<a href="#" class="header-links" onclick="document.getElementById('theme').setAttribute('href','css/theme/black.css'); return false;">Black</a>
+</span>
 
-<span style="position:absolute; left:-15%; color: #ECE9D7; top:100%; font-size: 0.5em;">Slides: [kvanttt.github.io](https://kvanttt.github.io/)</span>
+<span style="position:absolute; left:-15%; top:100%; font-size: 0.5em;">
+Slides: <span class="header-links">kvanttt.github.io</a>
+</span>
 
 </div>
 
@@ -1248,7 +1258,7 @@ public override MatchContext Match(Token t, MatchContext c)
 
 * Several source code analyzer types have been described.
 * Different models show different properties of programs.
-* More complex model -> less generalized analyzer.
+* More complex model → less generalized analyzer.
 
 <aside class="notes">
 А теперь давайте проголосуем еще раз. Как думайте, возможен ли написать
